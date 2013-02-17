@@ -26,6 +26,7 @@ public class server{
 		MyFocusLostListener focus = new MyFocusLostListener();
 		MyMouseListener mouse = new MyMouseListener();
 		MyMouseClickListener clickM = new MyMouseClickListener();
+		MyKeyListener keyL = new MyKeyListener();
 		try{
 			streznik = new ServerSocket(80);
 		}
@@ -51,15 +52,19 @@ public class server{
 			bais = new ByteArrayInputStream(data);
 			slika=ImageIO.read(bais);
 			kk=new DisplayImage(resize(slika));
+			kk.setFocusable(true);
 			kk.addMouseMotionListener(mouse);
 			kk.addMouseListener(clickM);
+			kk.addKeyListener(keyL);
 			dos.writeInt(mouse.coordinataX);
 			dos.writeInt(mouse.coordinataY);
 			dos.writeBoolean(clickM.mousy);
+			dos.writeBoolean(keyL.keyPress);
 			frame.add(kk);
 			frame.pack();
 			frame.setVisible(true);
 			frame.addWindowListener(focus);
+			
 			
 			while(true){
 				if(focus.aktivna==true){
@@ -78,7 +83,12 @@ public class server{
 						dos.writeInt(clickM.buttonC);
 						clickM.mousy=false;
 					}
-					
+					dos.writeBoolean(keyL.keyPress);
+					if(keyL.keyPress==true){
+						
+						dos.writeInt(keyL.key);
+						keyL.keyPress=false;
+					}
 				}
 				if(focus.aktivna==false){
 					Thread.sleep(500);

@@ -15,8 +15,9 @@ public class client {
 		ScreenShoot screen = new ScreenShoot();
 		Robot mouse = new Robot();
 		boolean clickM=false;
+		boolean keyPress=false;
 		try{
-			stranka=new Socket("Makina", portNumber);				
+			stranka=new Socket("Makina", portNumber);	
 			OutputStream os = stranka.getOutputStream(); 
 			DataOutputStream dos = new DataOutputStream( os );
 			DataInputStream dis = new DataInputStream(stranka.getInputStream());
@@ -52,6 +53,11 @@ public class client {
 						mouse.mouseRelease(InputEvent.BUTTON3_MASK);
 					}				
 					
+				}
+				keyPress=dis.readBoolean();				
+				if(keyPress==true){
+				
+					System.out.println(dis.readInt());;
 				}
 				
 			}
