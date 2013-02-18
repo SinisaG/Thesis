@@ -26,7 +26,10 @@ public class server{
 		MyFocusLostListener focus = new MyFocusLostListener();
 		MyMouseListener mouse = new MyMouseListener();
 		MyMouseClickListener clickM = new MyMouseClickListener();
+		
 		MyKeyListener keyL = new MyKeyListener();
+		KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(keyL);
+		
 		try{
 			streznik = new ServerSocket(80);
 		}
@@ -55,7 +58,7 @@ public class server{
 			kk.setFocusable(true);
 			kk.addMouseMotionListener(mouse);
 			kk.addMouseListener(clickM);
-			kk.addKeyListener(keyL);
+			//kk.addKeyListener(keyL);
 			dos.writeInt(mouse.coordinataX);
 			dos.writeInt(mouse.coordinataY);
 			dos.writeBoolean(clickM.mousy);
@@ -65,6 +68,8 @@ public class server{
 			frame.setVisible(true);
 			frame.addWindowListener(focus);
 			
+			int x=0;
+			int y=0;
 			
 			while(true){
 				if(focus.aktivna==true){
@@ -76,8 +81,19 @@ public class server{
 					dis.readFully(data);
 					bais = new ByteArrayInputStream(data);
 					kk.changeImage(resize(ImageIO.read(bais)));
-					dos.writeInt(mouse.coordinataX);
-					dos.writeInt(mouse.coordinataY);
+					if(ekran.getWidth()<slika.getWidth()){	
+							x=(int)(mouse.coordinataX*slika.getWidth()/ekran.getWidth());
+							y=(int)(mouse.coordinataY*slika.getHeight()/(ekran.getHeight()-70));
+					}
+					
+					else {
+						x=mouse.coordinataX;
+						y=mouse.coordinataY;
+					
+					}
+					
+					dos.writeInt(x);
+					dos.writeInt(y);
 					dos.writeBoolean(clickM.mousy);
 					if(clickM.mousy==true){
 						dos.writeInt(clickM.buttonC);
@@ -88,6 +104,7 @@ public class server{
 						
 						dos.writeInt(keyL.key);
 						keyL.keyPress=false;
+						keyL.enkrat=false;
 					}
 				}
 				if(focus.aktivna==false){
@@ -118,7 +135,7 @@ public class server{
 				BufferedImage dimg = dimg = new BufferedImage((int)width, (int)height , img.getType());  
 				Graphics2D g = dimg.createGraphics();  
 				g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);  
-				g.drawImage(img, 0, 0, (int)width, (int)height, 0, 0, (int)iwidth, (int)iheight, null);  
+				g.drawImage(img, 0, 0, (int)width, (int)height -70, 0, 0, (int)iwidth, (int)iheight, null);  
 				g.dispose();  
 				return dimg;  			
 		}

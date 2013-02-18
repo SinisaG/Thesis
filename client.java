@@ -17,7 +17,7 @@ public class client {
 		boolean clickM=false;
 		boolean keyPress=false;
 		try{
-			stranka=new Socket("Makina", portNumber);	
+			stranka=new Socket("192.168.1.4", portNumber);	
 			OutputStream os = stranka.getOutputStream(); 
 			DataOutputStream dos = new DataOutputStream( os );
 			DataInputStream dis = new DataInputStream(stranka.getInputStream());

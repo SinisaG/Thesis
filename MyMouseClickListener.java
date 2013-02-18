@@ -4,11 +4,12 @@ public class MyMouseClickListener implements MouseListener{
 
 	int buttonC;
 	boolean mousy = false;
-
+	
 @Override
 public void mouseClicked(MouseEvent e) {
 	mousy=true;
 	buttonC=e.getButton();
+	
 }
 @Override
 public void mouseEntered(MouseEvent e) {}
