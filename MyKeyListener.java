@@ -2,14 +2,12 @@ import java.awt.event.*;
 import java.awt.KeyEventDispatcher;
 import java.util.*;
 
-public class MyKeyListener implements KeyEventDispatcher{
+public class MyKeyListener implements KeyListener{
 
 	//int [] temp = new int [2];
 	boolean keyPress=false;
 	//public static int i=0;
-	public static boolean enkrat=false;
-	public static int key;
-	
+	public static ArrayList key = new ArrayList();
 	/*@Override
 	public void keyPressed(KeyEvent e){
 		key=e.getKeyCode();
@@ -27,17 +25,19 @@ public class MyKeyListener implements KeyEventDispatcher{
 		
 	}*/
 	
-	public boolean dispatchKeyEvent(KeyEvent e) {
-		
-		if(enkrat==false){
-			key=e.getKeyCode();
-			//i++;
-			keyPress=true;
-			//key=temp[0];
-			enkrat=true;
+	public void keyPressed(KeyEvent e) {
+        //  Invoked when a key has been pressed.
+			//System.out.println("p");
+			key.add(e.getKeyCode());
 		}
-			return true;
-	}
-
-
+	public void	keyReleased(KeyEvent e) {
+          //Invoked when a key has been released.
+			//System.out.println("r");
+		  }
+	public void	keyTyped(KeyEvent e) {
+        //  Invoked when a key has been typed.
+			
+		}
+	
 }
+

@@ -3,13 +3,12 @@ import java.awt.event.*;
 public class MyMouseClickListener implements MouseListener{
 
 	int buttonC;
-	boolean mousy = false;
+	int mousy = 0;
 	
 @Override
 public void mouseClicked(MouseEvent e) {
-	mousy=true;
+	mousy=1;
 	buttonC=e.getButton();
-	
 }
 @Override
 public void mouseEntered(MouseEvent e) {}
