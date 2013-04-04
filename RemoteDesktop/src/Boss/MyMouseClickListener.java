@@ -1,3 +1,5 @@
+package Boss;
+
 import java.awt.event.*;
 
 public class MyMouseClickListener implements MouseListener{
@@ -18,7 +20,5 @@ public void mouseExited(MouseEvent e) {}
 public void mousePressed(MouseEvent e) {}
 @Override
 public void mouseReleased(MouseEvent e) {}
-
-
 
 }

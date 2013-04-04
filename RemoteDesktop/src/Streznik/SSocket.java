@@ -1,25 +1,43 @@
-import java.net.*;
-import java.io.*;
-class SSocket implements Runnable {
+package Streznik;
 
+import java.io.*;
+import java.net.Socket;
+class SSocket implements Runnable {
+        
+        Socket boss=null;
+        Socket client=null;
+        int bossID=0;
+        int clientID=0;
+    
+        public SSocket(Socket _boss, Socket _client, int a, int b) {
+
+            this.boss=_boss;
+            this.client=_client;
+            bossID=a;
+            clientID=b;          
+        }
+    
+        
 	@Override
 	public void run() {
 		try {
-			int rows=4;
+                        System.out.println("Remote desktop running");
+                        int rows=4;
 			int colums=4;
 			int chunks=rows*colums;
 			byte[] data = null;
 			//client
-			InputStream in = Streznik.sockets.get(0).getInputStream();
-			OutputStream out = Streznik.sockets.get(0).getOutputStream();
+			InputStream in = client.getInputStream();
+			OutputStream out = client.getOutputStream();
 			DataInputStream employeeI = new DataInputStream(in);
 			DataOutputStream employeeO = new DataOutputStream(out);
 			//server
-			InputStream inn = Streznik.sockets.get(1).getInputStream();
-			OutputStream outt = Streznik.sockets.get(1).getOutputStream();
+			InputStream inn = boss.getInputStream();
+			OutputStream outt = boss.getOutputStream();
 			DataInputStream employerI = new DataInputStream(inn);
 			DataOutputStream employerO = new DataOutputStream(outt);
 			
+                        employeeO.writeInt(employerI.readInt());
 			int len=employeeI.readInt();
 			employerO.writeInt(len);
 			data=new byte [len];
@@ -72,7 +90,10 @@ class SSocket implements Runnable {
 			}
 				
 		 }
-		 catch (Exception e) {}
+		 catch (Exception e) {               
+                     Streznik.connections.remove(bossID);
+                     Streznik.connections.remove(clientID);
+                 }
 		 
 		
 	}

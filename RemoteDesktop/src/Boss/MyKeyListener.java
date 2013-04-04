@@ -1,5 +1,6 @@
+package Boss;
+
 import java.awt.event.*;
-import java.awt.KeyEventDispatcher;
 import java.util.*;
 
 public class MyKeyListener implements KeyListener{
@@ -8,22 +9,6 @@ public class MyKeyListener implements KeyListener{
 	boolean keyPress=false;
 	//public static int i=0;
 	public static ArrayList key = new ArrayList();
-	/*@Override
-	public void keyPressed(KeyEvent e){
-		key=e.getKeyCode();
-		keyPress=true;
-	}
-	@Override
-	public void keyReleased(KeyEvent e){}
-	@Override
-	public void keyTyped(KeyEvent e){
-		key=e.getKeyCode();
-		keyPress=true;
-		c=e.getKeyChar();
-		if(c==VK_A) key=65;
-		System.out.println(key);
-		
-	}*/
 	
 	public void keyPressed(KeyEvent e) {
         //  Invoked when a key has been pressed.
