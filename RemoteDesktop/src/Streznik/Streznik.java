@@ -11,7 +11,7 @@ public class Streznik {
     public static Hashtable  connections = new Hashtable();    
     public static void main(String[] args) {
         
-        int port = 666; //random port number
+        int port = 959; //random port number
         InputStream is;
         DataInputStream dis = null;
         int id=0;
@@ -19,7 +19,6 @@ public class Streznik {
         try {
 
             ServerSocket ss = new ServerSocket(port);
-            //prvi se poveze nadzorovani(client), nato nadzornik(server)
             Socket client = null;
             while (true) {
                  client= ss.accept();

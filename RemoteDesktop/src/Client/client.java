@@ -29,10 +29,10 @@ public class client implements Runnable {
     public void run() {   
 
        int id =(int)(Math.random() * 1000000000);
-       ArrayList key = new ArrayList();
+       ArrayList <Integer> key = new ArrayList();
        int portNumber=0;
        String host="";
-        
+ 
        try {            
             Scanner scan = new Scanner(new File("src/Config/config.txt"));
             scan.useDelimiter("\n|;|:");
@@ -55,9 +55,17 @@ public class client implements Runnable {
             System.exit(1);
         }
 
+       
+        GUIClient gui = new GUIClient();
+        gui.setSize(450, 350);
+        gui.jTextField1.setText(Integer.toString(id));
+        gui.jTextArea1.setText("Connected to the server. \nPlease confirm that you allow connections on your computer.\n");
+        gui.setVisible(true);
+        
+        
         Socket stranka = null;
         ScreenShoot screen = new ScreenShoot();
-         Robot mouse = null;
+        Robot mouse = null;
         try{
             mouse = new Robot();
         }
@@ -73,25 +81,23 @@ public class client implements Runnable {
         int mouseYP = 0;
    
         methodNumber=1;
-        try {
-            stranka = new Socket(host, portNumber);            
-            OutputStream os = stranka.getOutputStream();
-            DataOutputStream dos = new DataOutputStream(os);
-            DataInputStream dis = new DataInputStream(stranka.getInputStream());
-            BufferedImage image;
-            dos.writeInt(id);
-            dos.writeBoolean(false);
+        while (true) { 
             
-            GUIClient gui = new GUIClient();
-            gui.setSize(450, 350);
-            gui.jTextField1.setText(Integer.toString(id));
-            gui.jTextArea1.setText("Connected to the server. \nPlease confirm that you allow connections on your computer.\n");
-            gui.setVisible(true);
-            
-            while (true) {           
+            try{
                 Thread.sleep(5);
-                
+            }
+            catch (Exception e){}
                 if(allow){
+                    try {
+                        stranka = new Socket(host, portNumber);            
+                        OutputStream os = stranka.getOutputStream();
+                        DataOutputStream dos = new DataOutputStream(os);
+                        DataInputStream dis = new DataInputStream(stranka.getInputStream());
+                        BufferedImage image;
+                        if(!gui.jRadioButton1.isSelected()){
+                            dos.writeInt(id);
+                            dos.writeBoolean(false);
+                        }
                     bossId=dis.readInt();
                     gui.jTextArea1.append(bossId + " has connected to your maschine." );
                     while(true){
@@ -144,7 +150,7 @@ public class client implements Runnable {
 
                         if (keyPress == true) {
                            key.add(dis.readInt());
-                           if(key.size()>1){
+                          /* if(key.size()>1){
                            
                                if((key.get(key.size() - 2) == KeyEvent.VK_ALT) || (key.get(key.size() - 2) == KeyEvent.VK_SHIFT)){
                                
@@ -160,20 +166,19 @@ public class client implements Runnable {
                                     mouse.keyRelease(key.size() - 1);
                                }                          
                            }                          
-                           else {
+                           else {*/
                            
-                                     mouse.keyPress(key.size() - 1);
-                                    mouse.keyRelease(key.size() - 1);
-                           }
-                                 
+                                    mouse.keyPress(key.get(key.size() - 1));
+                                    mouse.keyRelease(key.get(key.size() - 1));
+                           //}                             
                         }
                     }
-                }
+                }catch (Exception e) {
+                    System.out.println(e);
+                    }
             }
 
-        } catch (Exception e) {
-            System.out.println(e);
-        }
+        } 
     }
 
     public static void sliceAndSend(BufferedImage i, DataOutputStream dos) throws Exception {

@@ -90,8 +90,16 @@ public class GUIBoss extends javax.swing.JFrame implements ActionListener  {
     }// </editor-fold>           
       
        public void actionPerformed(ActionEvent e) {       
-           server.wantToConnect=true;
-           server.connectingID= Integer.parseInt(jTextField2.getText()) ;         
+           server.wantToConnect=true;          
+           try{
+                server.connectingID= Integer.parseInt(jTextField2.getText()) ;    
+           }
+           
+           catch (Exception a){
+           
+                server.wantToConnect=false;  
+                jTextField2.setText("NaN!");
+           }
         }
 
         public void windowClosing(WindowEvent e) {

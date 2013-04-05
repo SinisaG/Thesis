@@ -23,6 +23,9 @@ public class server implements Runnable{
        String host="";
        int id =(int)(Math.random() * 1000000000);
 
+       
+        
+       
        try {
              
             Scanner scan = new Scanner(new File("src/Config/config.txt"));
@@ -41,27 +44,8 @@ public class server implements Runnable{
             System.out.println(e + "\nCan not find config file or it is not formated properly");
             System.exit(1);
         }
-        InputStream is;
-        DataInputStream dis = null;
-        OutputStream os;
-        DataOutputStream dos=null;
-        ByteArrayInputStream bais;
-        int len = 0;
-        byte[] data;
-        Socket klient = null;
-        try {
-            klient = new Socket(host, portNumber);
-            is = klient.getInputStream();
-            dis = new DataInputStream(is);
-            os = klient.getOutputStream();
-            dos = new DataOutputStream(os);
-            dos.writeInt(id);
-            dos.writeBoolean(true);
-            
-        } catch (Exception e) {
-            System.out.println("Can not connect!\n" + e);
-        }
-
+       
+       
         GUIBoss gui = new GUIBoss();
         gui.setSize(450, 350);
         gui.jTextArea1.setText("You are connected to: " + host + ":" + portNumber + "\n");
@@ -69,17 +53,64 @@ public class server implements Runnable{
         gui.jTextArea1.append("Note: If you choose not to connect over server, there might be need \nfor more configuration. Check the host in config. Also possible port\nforwarding needed.\n");
         
         gui.jTextField1.setText(Integer.toString(id));
+         
         gui.setVisible(true);
-
         
-        while(true){ 
+        
+         while(true){ 
             try{
                 Thread.sleep(5);
+     
             }
             catch(Exception e){
                 System.out.println("Something wrong with pause.");
             }
+            
             if(wantToConnect){
+                
+                
+                InputStream is;
+                DataInputStream dis = null;
+                OutputStream os;
+                DataOutputStream dos=null;
+                ByteArrayInputStream bais;
+                int len = 0;
+                byte[] data;
+                
+                if(gui.jRadioButton1.isSelected()==false){
+                    Socket klient = null;
+                    try {
+                        klient = new Socket(host, portNumber);
+                        is = klient.getInputStream();
+                        dis = new DataInputStream(is);
+                        os = klient.getOutputStream();
+                        dos = new DataOutputStream(os);
+                        dos.writeInt(id);
+                        dos.writeBoolean(true);
+
+                    } catch (Exception e) {
+                        System.out.println("Can not connect!\n" + e);
+                    }
+                }
+                
+                else{           
+                    ServerSocket server =null;
+                    Socket klient = null;
+                    try {
+                        server = new ServerSocket(portNumber);
+                        System.out.println("I am waiting for connection");
+                        klient=server.accept();
+                        System.out.println("Connection accepted");
+                        is = klient.getInputStream();
+                        dis = new DataInputStream(is);
+                        os = klient.getOutputStream();
+                        dos = new DataOutputStream(os);                    
+                    } catch (Exception e) {
+                        System.out.println("Can not connect!\n" + e);
+                    }
+                }
+ 
+       
                 try {
                     dos.writeInt(connectingID);
                     gui.setVisible(false);
@@ -139,9 +170,9 @@ public class server implements Runnable{
                             //System.out.println((stop-start)/1000000);
                             kk.changeImage(resize(glu(dis, bais, data, len)));
 
-                            if (ekran.getWidth() < slika.getWidth()) {
+                            if (ekran.getWidth() <= slika.getWidth()) {
                                 x = (int) (mouse.coordinataX * slika.getWidth() / ekran.getWidth());
-                                y = (int) (mouse.coordinataY * slika.getHeight() / (ekran.getHeight() - 70));
+                                y = (int) (mouse.coordinataY * slika.getHeight() / (ekran.getHeight() - 100));
                             } else {
                                 x = mouse.coordinataX;
                                 y = mouse.coordinataY;
@@ -190,12 +221,12 @@ public class server implements Runnable{
         double iheight = img.getHeight();
         double percentw;
         double percenth;
-        if (iwidth > width || iheight > height) {
+        if (iwidth > width || iheight >= height) {
 
             BufferedImage dimg = dimg = new BufferedImage((int) width, (int) height, img.getType());
             Graphics2D g = dimg.createGraphics();
             g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-            g.drawImage(img, 0, 0, (int) width, (int) height - 70, 0, 0, (int) iwidth, (int) iheight, null);
+            g.drawImage(img, 0, 0, (int) width, (int) height - 100, 0, 0, (int) iwidth, (int) iheight, null);
             g.dispose();
             return dimg;
         }

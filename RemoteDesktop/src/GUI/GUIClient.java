@@ -75,6 +75,9 @@ public class GUIClient extends javax.swing.JFrame implements ActionListener  {
         jButton2.setBounds(210, 210, 150, 30);
         jButton2.addActionListener(this);
 
+        jRadioButton1.setText("Do not use the server");
+        getContentPane().add(jRadioButton1);
+        jRadioButton1.setBounds(210, 250, 180, 23);
         pack();
     }// </editor-fold>           
       
