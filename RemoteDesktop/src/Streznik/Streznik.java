@@ -1,6 +1,7 @@
 package Streznik;
 
 import java.io.DataInputStream;
+import java.io.File;
 import java.io.InputStream;
 import java.net.*;
 import java.util.*;
@@ -11,11 +12,29 @@ public class Streznik {
     public static Hashtable  connections = new Hashtable();    
     public static void main(String[] args) {
         
-        int port = 959; //random port number
+        int port=0;; //random port number
         InputStream is;
         DataInputStream dis = null;
         int id=0;
         boolean isBoss=false;
+        
+        
+        try {
+             
+            Scanner scan = new Scanner(new File("Config/config.txt"));
+            scan.useDelimiter("\n|;|:");          
+            while (scan.hasNext()) {
+               
+                String temp = scan.next();                
+                if("server port".equals(temp)){                
+                    port=Integer.parseInt(scan.next());                  
+                }             
+            }
+        } catch (Exception e) {
+            System.out.println(e + "\nCan not find config file or it is not formated properly");
+            System.exit(1);
+        }
+        
         try {
 
             ServerSocket ss = new ServerSocket(port);

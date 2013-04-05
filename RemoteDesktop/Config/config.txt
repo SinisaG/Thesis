@@ -1,0 +1,3 @@
+port number:959;
+host:localhost;
+server port:959;

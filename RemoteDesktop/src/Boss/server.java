@@ -28,7 +28,7 @@ public class server implements Runnable{
        
        try {
              
-            Scanner scan = new Scanner(new File("src/Config/config.txt"));
+            Scanner scan = new Scanner(new File("Config/config.txt"));
             scan.useDelimiter("\n|;|:");          
             while (scan.hasNext()) {
                
