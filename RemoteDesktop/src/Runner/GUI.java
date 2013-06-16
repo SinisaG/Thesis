@@ -63,7 +63,7 @@ public class GUI extends javax.swing.JFrame implements ActionListener {
     
     
     // End of variables declaration              
-      
+     @Override
      public void actionPerformed(ActionEvent e) {     
            if(e.getSource() == jButton1 && countC <1){            
                   countC++;
